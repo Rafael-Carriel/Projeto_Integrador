@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_application_pi/screens/login_page.dart';
 import 'package:flutter_application_pi/screens/my_app.dart';
 
 import 'package:flutter_application_pi/services/auth_service.dart';
@@ -15,5 +14,6 @@ void main() async {
         create: (context) => AuthService(),
       )
     ],
+    child: const MyApp(),
   ));
 }

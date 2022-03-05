@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_pi/screens/register_page.dart';
+import 'package:flutter_application_pi/services/auth_service.dart';
+import 'package:provider/src/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,36 +14,28 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final email = TextEditingController();
   final senha = TextEditingController();
-  bool isLogin = true;
-  late String titulo;
-  late String actionButtom;
-  late String toggleButtom;
+  bool loading = false;
 
   @override
   void initState() {
     super.initState();
-    setFormAction(true);
   }
 
-  setFormAction(bool acao) {
-    setState(() {
-      isLogin = acao;
-      if (isLogin) {
-        titulo = "Bem vindo ao Can Work";
-        actionButtom = "Login";
-        toggleButtom = "Não tem cadastro ainda? se cadastre aqui";
-      } else {
-        titulo = "Crie sua conta";
-        actionButtom = "Cadastrar";
-        toggleButtom = "Já tenho uma conta";
-      }
-    });
+  Login() async {
+    setState(() => loading = true);
+    try {
+      await context.read<AuthService>().Login(email.text, senha.text);
+    } on AuthException catch (e) {
+      setState(() => loading = false);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.Message)));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -49,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  titulo,
+                  "Bem vindo ao Can Work",
                   style: const TextStyle(fontSize: 30.0, color: Colors.blue),
                 ),
                 Padding(
@@ -93,25 +88,45 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          Login();
+                        }
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(24),
-                            child: Text(
-                              actionButtom,
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                        ],
+                        children: (loading)
+                            ? [
+                                const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              ]
+                            : [
+                                const Padding(
+                                  padding: EdgeInsets.all(24),
+                                  child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
                       )),
                 ),
                 TextButton(
-                    onPressed: () => setFormAction(!isLogin),
-                    child: Text(toggleButtom)),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPage())),
+                    child: const Text("Não possui uma conta? Cadastre-se")),
               ],
             ),
           ),

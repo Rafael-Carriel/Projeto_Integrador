@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 <html>
+  
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -33,9 +35,28 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBizWvDOG-_DjuuiNbcMje-J8cOsOHNcZ0",
+      authDomain: "projeto-integrador-3efa7.firebaseapp.com",
+      databaseURL: "https://projeto-integrador-3efa7-default-rtdb.firebaseio.com",
+      projectId: "projeto-integrador-3efa7",
+      storageBucket: "projeto-integrador-3efa7.appspot.com",
+      messagingSenderId: "940535192555",
+      appId: "1:940535192555:web:907bb1d7e47335217c97ae",
+      measurementId: "G-RQG0W2ND0E"
+    };
+
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
+
+    // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
     function loadMainDartJs() {
       if (scriptLoaded) {
         return;
