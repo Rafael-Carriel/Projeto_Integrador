@@ -1,25 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_pi/databases/postagem.dart';
+import 'package:flutter_application_pi/screens/perfil_screen.dart';
+import 'package:flutter_application_pi/screens/postagem_screen.dart';
+
+import 'configure_screen.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({Key? key}) : super(key: key);
-
   @override
   _MyHomeState createState() => _MyHomeState();
 }
 
 class _MyHomeState extends State<MyHome> {
-  List<postagem> post = [];
-  postagem p = postagem("zeca ", "Oreia");
+  int _Index = 0;
+  final List<Widget> _screens = [
+    const PostagemScreen(),
+    const PerfilScreen(),
+    const ConfigureScreen()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Postagens"),
-        centerTitle: true,
-      ),
+      body: _screens[_Index],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
+        currentIndex: _Index,
+        onTap: (int index) => setState(() {
+          (_Index = index);
+        }),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
@@ -45,10 +52,6 @@ class _MyHomeState extends State<MyHome> {
             label: " ",
           ),
         ],
-      ),
-      body: ListView.builder(
-        itemCount: post.length,
-        itemBuilder: (context, index) => post[index],
       ),
     );
   }

@@ -1,11 +1,23 @@
+// ignore_for_file: non_constant_identifier_names, duplicate_ignore
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_application_pi/screens/my_home.dart';
 import 'package:flutter_application_pi/widgets/auth_check.dart';
 
+// ignore: duplicate_ignore
 class AuthException implements Exception {
-  String Message;
-  AuthException(this.Message);
+  // ignore: non_constant_identifier_names
+  String _Message;
+
+  // ignore: unnecessary_getters_setters
+  String get Message => _Message;
+
+  // ignore: unnecessary_getters_setters
+  set Message(String Message) {
+    _Message = Message;
+  }
+
+  AuthException(this._Message);
 }
 
 class AuthService extends ChangeNotifier {
@@ -37,6 +49,7 @@ class AuthService extends ChangeNotifier {
   Registrar(String email, String senha) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: senha);
+      _getUser();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw AuthException('Senha tem que possuir 6 digitos ou mais!');
@@ -57,5 +70,11 @@ class AuthService extends ChangeNotifier {
         throw AuthException('Senha errada');
       }
     }
+  }
+
+  LogOut() async {
+    _auth.signOut();
+    _getUser();
+    notifyListeners();
   }
 }

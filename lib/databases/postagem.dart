@@ -12,7 +12,7 @@ class postagem extends StatelessWidget {
       width: 100,
       child: Row(
         children: [
-          Container(
+          const SizedBox(
             width: 50,
             height: 100,
           ),

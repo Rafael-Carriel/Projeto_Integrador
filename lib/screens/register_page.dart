@@ -195,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           Cadastro();
                           p.registraDB(name.text, cpf.text, phone.text,
                               cep.text, describe.text, email.text);
-                          Navigator.pop(context);
+                          //Navigator.pop(context);
                         }
                       },
                       child: Row(

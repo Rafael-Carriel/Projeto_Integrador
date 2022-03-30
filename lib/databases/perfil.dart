@@ -18,4 +18,8 @@ class perfil extends ChangeNotifier {
       "describe": "Uhull"
     });
   }
+
+  /* void getPerfil() async {
+    await db.collection("user").
+  }*/
 }
