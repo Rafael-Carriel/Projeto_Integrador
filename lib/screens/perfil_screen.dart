@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_pi/databases/perfil.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
@@ -8,8 +9,31 @@ class PerfilScreen extends StatefulWidget {
 }
 
 class _PerfilScreenState extends State<PerfilScreen> {
+  Perfil p = Perfil();
+
+  Map us = {
+    'name': '',
+    'cpf': '',
+    'telefone': '',
+    'cep': '',
+    'email': '',
+  };
+
+  getPerfil() async {
+    Map _data = await p.getPerfil();
+    if (this.mounted) {
+      us['name'] = _data['name'];
+      us['cpf'] = _data['cpf'];
+      us['telefone'] = _data['telefone'];
+      us['cep'] = _data['cep'];
+      us['email'] = _data['email'];
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getPerfil();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -20,36 +44,62 @@ class _PerfilScreenState extends State<PerfilScreen> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-                color: Colors.blue,
-                height: 100,
-                width: 100,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                  image: const DecorationImage(
+                image: AssetImage('assets/a.jpeg'),
+              )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 4),
               ),
-              Column(
-                // ignore: prefer_const_literals_to_create_immutables
+              child: Column(
                 children: [
-                  const Text('Rafael Carriel de Oliveira'),
+                  Text(
+                    us['name'],
+                    style: TextStyle(fontSize: 25.0, color: Colors.blue[400]),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('42 984429392'),
+                  Text(us['cpf'],
+                      style:
+                          TextStyle(fontSize: 25.0, color: Colors.blue[400])),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('rafael@gmail.com'),
+                  Text(us['cep'],
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.blue[400],
+                      )),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(' I am Rafael'),
+                  Text(us['telefone'],
+                      style:
+                          TextStyle(fontSize: 25.0, color: Colors.blue[400])),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(us['email'],
+                      style:
+                          TextStyle(fontSize: 25.0, color: Colors.blue[400])),
                 ],
-              )
-            ],
-          )
-        ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

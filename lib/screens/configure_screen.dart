@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_pi/services/auth_service.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class ConfigureScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class _ConfigureScreenState extends State<ConfigureScreen> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: LogOut,

@@ -1,17 +1,12 @@
-import 'dart:io';
-
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_pi/databases/perfil.dart';
-import 'package:flutter_application_pi/screens/my_home.dart';
 import 'package:flutter_application_pi/services/auth_service.dart';
-import 'package:flutter_application_pi/widgets/auth_check.dart';
 import 'package:provider/src/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
-
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -25,8 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final describe = TextEditingController();
   final email = TextEditingController();
   final senha = TextEditingController();
-  perfil p = perfil();
-
+  Perfil p = Perfil();
   bool loading = false;
 
   @override
@@ -37,7 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Cadastro() async {
     setState(() => loading = true);
     try {
-      await context.read<AuthService>().Registrar(email.text, senha.text);
+      await context.read<AuthService>().Registrar(
+          name.text, cpf.text, phone.text, cep.text, email.text, senha.text);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
@@ -47,17 +42,17 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget build(BuildContext context) {
-    TextEditingController c;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             key: formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Registrar",
                   style: TextStyle(fontSize: 30.0, color: Colors.blue),
                 ),
@@ -193,8 +188,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           Cadastro();
-                          p.registraDB(name.text, cpf.text, phone.text,
-                              cep.text, describe.text, email.text);
                           //Navigator.pop(context);
                         }
                       },
@@ -228,7 +221,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text("Já possui uma conta? Logue-se")),
+                    child: const Text("Já possui uma conta? Logue-se")),
               ],
             ),
           ),
