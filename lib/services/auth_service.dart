@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_application_pi/databases/perfil.dart';
 import 'package:flutter_application_pi/widgets/auth_check.dart';
 
@@ -69,6 +70,14 @@ class AuthService extends ChangeNotifier {
       } else if (e.email == 'wrong-password') {
         throw AuthException('Senha errada');
       }
+    }
+  }
+
+  rec(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw AuthException('Não foi possivel enviar o email de recuperação');
     }
   }
 

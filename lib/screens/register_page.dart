@@ -33,6 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       await context.read<AuthService>().Registrar(
           name.text, cpf.text, phone.text, cep.text, email.text, senha.text);
+      Navigator.pop(context);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
@@ -188,7 +189,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           Cadastro();
-                          //Navigator.pop(context);
                         }
                       },
                       child: Row(

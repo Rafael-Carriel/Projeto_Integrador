@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_pi/screens/login_page.dart';
 import 'package:flutter_application_pi/screens/my_home.dart';
+import 'package:flutter_application_pi/screens/register_page.dart';
 import 'package:flutter_application_pi/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class _AuthCheckState extends State<AuthCheck> {
     if (auth.isLoading) {
       return loading();
     } else if (auth.usuario == null) {
-      return const LoginPage();
+      return (const LoginPage());
     } else {
       return const MyHome();
     }

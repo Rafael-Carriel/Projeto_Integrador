@@ -32,6 +32,41 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Recuperar() async {
+    try {
+      await context.read<AuthService>().rec(email.text);
+      showAlertDialog1(context);
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.Message)));
+    }
+  }
+
+  showAlertDialog1(BuildContext context) {
+    // configura o button
+    Widget okButton = ElevatedButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    // configura o  AlertDialog
+    AlertDialog alerta = AlertDialog(
+      title: Text("Alteração de senha"),
+      content: Text("Foi enviado um email para alterar sua senha"),
+      actions: [
+        okButton,
+      ],
+    );
+    // exibe o dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alerta;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,6 +162,11 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(
                             builder: (context) => const RegisterPage())),
                     child: const Text("Não possui uma conta? Cadastre-se")),
+                TextButton(
+                    onPressed: () {
+                      Recuperar();
+                    },
+                    child: const Text("esqueceu a senha?")),
               ],
             ),
           ),

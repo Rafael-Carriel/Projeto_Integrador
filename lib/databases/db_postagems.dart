@@ -10,7 +10,7 @@ class db_postagem extends ChangeNotifier {
   var uid = FirebaseAuth.instance.currentUser!.uid.toString();
   CollectionReference post = FirebaseFirestore.instance.collection('Postagens');
   Perfil perfil = Perfil();
-  late postagem postagens;
+  var postagens;
   Map us = {
     'name': '',
     'telefone': '',
@@ -34,7 +34,20 @@ class db_postagem extends ChangeNotifier {
     });
   }
 
-  CollectionReference get() {
-    return post;
+  Future<Map<String, String>> getPost() async {
+    final QuerySnapshot result =
+        await FirebaseFirestore.instance.collection('Postagens').get();
+    List<DocumentSnapshot> documents = result.docs;
+    for (var data in documents) {
+      us['title'] = data['title'];
+      us['describe'] = data['describe'];
+      us['name'] = data['name'];
+      us['phone'] = data['phone'];
+      us['email'] = data['email'];
+      print("a");
+      print(data);
+      return us as Map<String, String>;
+    }
+    return us as Map<String, String>;
   }
 }

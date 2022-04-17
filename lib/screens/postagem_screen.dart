@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_pi/databases/db_postagems.dart';
@@ -13,8 +11,25 @@ class PostagemScreen extends StatefulWidget {
   State<PostagemScreen> createState() => _PostagemScreenState();
 }
 
+db_postagem a = db_postagem();
+Map us = {
+  'title': '',
+  'describe': '',
+  'name': '',
+  'phone': '',
+  'email': '',
+};
+
+getPost() async {
+  Map<String, String> _data = await a.getPost();
+  us['tile'] = _data['title'];
+  us['describe'] = _data['describe'];
+  us['name'] = _data['name'];
+  us['phone'] = _data['phone'];
+  us['email'] = _data['email'];
+}
+
 class _PostagemScreenState extends State<PostagemScreen> {
-  late db_postagem posts;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,18 +46,13 @@ class _PostagemScreenState extends State<PostagemScreen> {
                 icon: const Icon(Icons.add_outlined))
           ],
         ),
-        body: StreamBuilder(
-            stream: posts.get().snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              }
-              return ListView(
-                children: snapshot.data!.docs.map((document) {
-                  return ListView();
-                }),
-              );
-            }));
+        body: ListView.separated(
+            itemBuilder: (BuildContext context, int index) =>
+                postagem(getPost(), getPost(), getPost(), getPost(), getPost()),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(
+                  height: 8,
+                ),
+            itemCount: 0));
   }
 }
