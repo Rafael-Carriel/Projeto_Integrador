@@ -70,6 +70,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Bem vindo ao Can Work",
+          style: TextStyle(
+            fontSize: 25.0,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -78,10 +87,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Bem vindo ao Can Work",
-                  style: const TextStyle(fontSize: 30.0, color: Colors.blue),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: TextFormField(
